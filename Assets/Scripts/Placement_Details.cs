@@ -84,7 +84,21 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
         int CurrentAmountOfMoney = Player_Info.GetComponent<Player_Information>().AmountOfMoney;
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if(CurrentBetSize == 0 || CurrentAmountOfMoney < CurrentBetSize || !GameManager.isAbleToBet){return;}
+            if(!GameManager.isAbleToBet)
+            {
+                return;
+            }
+            else if(CurrentBetSize == 0)
+            {
+                GameManager.ErrorMessage("Select A Bet Amount");
+                return;
+            }
+            else if(CurrentAmountOfMoney < CurrentBetSize)
+            {
+                GameManager.ErrorMessage("Not Enough Funds");
+                return;
+            }
+
             SoundManager.PokerChipSound();
             Player_Info.GetComponent<Player_Information>().AmountOfMoney -= CurrentBetSize;
             Player_Info.GetComponent<Player_Information>().TotalBetAmount += CurrentBetSize;
@@ -187,63 +201,4 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
             PayOut();
         }
     }
-
-    // public void BetType()
-    // {
-    //     if(isDouble)
-    //     {
-            
-    //         PayOut(12);
-    //     }
-    //     else if(isSingle)
-    //     {
-    //         PayOut();
-    //         if(SingleNumber == 4 || SingleNumber == 17)
-    //         {
-    //             PayOut(61);
-    //         }
-    //         else if(SingleNumber == 5 || SingleNumber == 16)
-    //         {
-    //             Payout(21);
-    //         }
-    //         else if(SingleNumber == 6 || SingleNumber == 15)
-    //         {
-    //             PayOut(19);
-    //         }
-    //         else if(SingleNumber == 7 || SingleNumber == 14)
-    //         {
-    //             Payout(13);
-    //         }
-    //         else if(SingleNumber == 8 || SingleNumber == 13)
-    //         {
-    //             PayOut(9);
-    //         }
-    //         else if(SingleNumber == 9 || SingleNumber == 10 || SingleNumber == 11 || SingleNumber == 12)
-    //         {
-    //             PayOut(7);
-    //         }
-
-    //     }
-    //     else if(isSingleSingle)
-    //     {
-    //         //For each dice shown needs to repeat
-    //         PayOut(2);
-    //     }
-    //     else if(isDoubleDouble)
-    //     {
-    //         PayOut(7);
-    //     }
-    //     else if(isTriple)
-    //     {
-    //         PayOut(181);
-    //     }
-    //     else if(isBigSmall)
-    //     {
-    //         PayOut(2);
-    //     }
-    //     else if (isAllTriple)
-    //     {
-    //         PayOut(30);
-    //     }
-    // }
 }

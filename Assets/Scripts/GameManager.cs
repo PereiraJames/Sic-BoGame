@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour
     private GameObject WonAmountDisplay;
     private GameObject WonAmountText;
     private GameObject DisplayOverlay;
+    private GameObject IntialOverlay;
+    private GameObject ErrorDisplay;
+    private GameObject ErrorMessageText;
+    private GameObject Dice_01;
+    private GameObject Dice_02;
+    private GameObject Dice_03;
     public int DiceTotal = 0;
     private Button RollDiceButton;
     public int TotalAmountWon = 0;
@@ -32,7 +38,21 @@ public class GameManager : MonoBehaviour
         WonAmountDisplay = GameObject.Find("WonAmountDisplay");
         WonAmountText = GameObject.Find("WonAmountText");
         DisplayOverlay = GameObject.Find("DisplayOverlay");
+        IntialOverlay = GameObject.Find("IntialOverlay");
+        ErrorDisplay = GameObject.Find("ErrorMessageDisplay");
+        ErrorMessageText = GameObject.Find("ErrorMessageText");
 
+        Dice_01 = GameObject.Find("Dice_01");
+        Dice_02 = GameObject.Find("Dice_02");
+        Dice_03 = GameObject.Find("Dice_03");
+
+        Dice_01.SetActive(false);
+        Dice_02.SetActive(false);
+        Dice_03.SetActive(false);
+
+        ErrorMessageText.SetActive(false);
+        ErrorDisplay.SetActive(false);
+        IntialOverlay.SetActive(true);
         DisplayOverlay.SetActive(false);
         NumberDisplay.SetActive(false);
         WonAmountDisplay.SetActive(false);
@@ -50,6 +70,9 @@ public class GameManager : MonoBehaviour
         WonAmountDisplay.SetActive(true);
         yield return new WaitForSeconds(3f);
 
+        Dice_01.SetActive(false);
+        Dice_02.SetActive(false);
+        Dice_03.SetActive(false);
         NumberDisplay.SetActive(false);
         WonAmountDisplay.SetActive(false);
         
@@ -83,6 +106,10 @@ public class GameManager : MonoBehaviour
 
     public void RollTheDice()
     {
+        Dice_01.SetActive(true);
+        Dice_02.SetActive(true);
+        Dice_03.SetActive(true);
+
         isAbleToBet = false;
         Debug.Log("RollALL");
         DiceTotal = 0;
@@ -139,5 +166,31 @@ public class GameManager : MonoBehaviour
         DisplayOverlay.SetActive(false);
         Player_Info.GetComponent<Player_Information>().AmountOfMoney = 1000; 
         UpdatePlayerInfo();
+    }
+
+    public void Buyin()
+    {
+        SoundManager.PokerChipSound();
+        IntialOverlay.SetActive(false);
+        Player_Info.GetComponent<Player_Information>().AmountOfMoney = 1000; 
+        UpdatePlayerInfo();
+    }
+
+    public void ErrorMessage(string text)
+    {
+        if(ErrorDisplay.activeSelf){return;}
+        Debug.Log("ErrorMessage");
+        StartCoroutine(DisplayError(text));
+    }
+
+    public IEnumerator DisplayError(string text)
+    {
+        Debug.Log("Displaying");
+        ErrorDisplay.SetActive(true);
+        ErrorMessageText.SetActive(true);
+        ErrorMessageText.GetComponent<TextMeshProUGUI>().text = text;
+        yield return new WaitForSeconds(1f);
+
+        ErrorDisplay.SetActive(false);
     }
 }
