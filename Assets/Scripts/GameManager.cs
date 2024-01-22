@@ -12,18 +12,26 @@ public class GameManager : MonoBehaviour
     private GameObject Player_Info;
     private GameObject WonAmountDisplay;
     private GameObject WonAmountText;
+    private GameObject DisplayOverlay;
     public int DiceTotal = 0;
     private Button RollDiceButton;
     public int TotalAmountWon = 0;
 
+    private SoundManager SoundManager;
+
     void Start()
     {
+        SoundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+
         NumberDisplay = GameObject.Find("NumberDisplay");
         NumberText = GameObject.Find("NumberText");
         Player_Info = GameObject.Find("Player_Info");
         RollDiceButton = GameObject.Find("RollDice").GetComponent<Button>();
         WonAmountDisplay = GameObject.Find("WonAmountDisplay");
         WonAmountText = GameObject.Find("WonAmountText");
+        DisplayOverlay = GameObject.Find("DisplayOverlay");
+
+        DisplayOverlay.SetActive(false);
         NumberDisplay.SetActive(false);
         WonAmountDisplay.SetActive(false);
     }
@@ -47,6 +55,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("TotalWon: " + TotalAmountWon);
         Player_Info.GetComponent<Player_Information>().AmountOfMoney += TotalAmountWon;
         UpdatePlayerInfo();
+        if(Player_Info.GetComponent<Player_Information>().AmountOfMoney <= 0)
+        {
+            DisplayOverlay.SetActive(true);
+        }
         NextGame();
         yield return new WaitForSeconds(1f);
         RollDiceButton.interactable = true;
@@ -66,10 +78,6 @@ public class GameManager : MonoBehaviour
         dieRolls.Add(dieRoll);
     }
 
-    public void CalculatePayout()
-    {
-        
-    }
 
     public void RollTheDice()
     {
@@ -86,6 +94,8 @@ public class GameManager : MonoBehaviour
         Dice1.GetComponent<Dice>().RollDie();
         Dice2.GetComponent<Dice>().RollDie();
         Dice3.GetComponent<Dice>().RollDie();
+        
+        SoundManager.DiceShuffleSound();
 
         StartCoroutine(DisplayWinNumber());
     }
@@ -113,8 +123,17 @@ public class GameManager : MonoBehaviour
                 child.GetComponent<Placement_Details>().ResetBet();
             }
         }
+        SoundManager.PokerChipSound();
         Player_Info.GetComponent<Player_Information>().TotalBetAmount = 0;
         TotalAmountWon = 0;
+        UpdatePlayerInfo();
+    }
+
+    public void Rebuy()
+    {
+        SoundManager.PokerChipSound();
+        DisplayOverlay.SetActive(false);
+        Player_Info.GetComponent<Player_Information>().AmountOfMoney = 1000; 
         UpdatePlayerInfo();
     }
 }

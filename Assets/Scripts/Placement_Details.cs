@@ -35,12 +35,13 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
     private GameObject chip;
     private GameObject chipAmount;
     
+    private SoundManager SoundManager;
 
     void Start()
     {
+        SoundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         foreach (Transform child in gameObject.GetComponentsInChildren<Transform>())
         {
-            Debug.Log(child);
             if(child.gameObject.name == "Chip")
             {
                 chip = child.gameObject;
@@ -58,6 +59,7 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
 
     public void ClearBet()
     {
+        SoundManager.PokerChipSound();
         gameObject.GetComponent<Image>().color = Color.white;
         chip.SetActive(false);
         Player_Info.GetComponent<Player_Information>().AmountOfMoney += AmountBet;
@@ -83,6 +85,7 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             if(CurrentBetSize == 0 || CurrentAmountOfMoney < CurrentBetSize){return;}
+            SoundManager.PokerChipSound();
             Player_Info.GetComponent<Player_Information>().AmountOfMoney -= CurrentBetSize;
             Player_Info.GetComponent<Player_Information>().TotalBetAmount += CurrentBetSize;
             AmountBet += CurrentBetSize;
