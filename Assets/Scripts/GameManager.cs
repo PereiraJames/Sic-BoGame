@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private Button RollDiceButton;
     public int TotalAmountWon = 0;
 
+    public bool isAbleToBet = true;
+
     private SoundManager SoundManager;
 
     void Start()
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void RollTheDice()
     {
+        isAbleToBet = false;
         Debug.Log("RollALL");
         DiceTotal = 0;
         dieRolls.Clear();
@@ -126,6 +129,7 @@ public class GameManager : MonoBehaviour
         SoundManager.PokerChipSound();
         Player_Info.GetComponent<Player_Information>().TotalBetAmount = 0;
         TotalAmountWon = 0;
+        isAbleToBet = true;
         UpdatePlayerInfo();
     }
 

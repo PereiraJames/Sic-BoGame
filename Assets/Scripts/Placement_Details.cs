@@ -84,7 +84,7 @@ public class Placement_Details : MonoBehaviour, IPointerClickHandler
         int CurrentAmountOfMoney = Player_Info.GetComponent<Player_Information>().AmountOfMoney;
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if(CurrentBetSize == 0 || CurrentAmountOfMoney < CurrentBetSize){return;}
+            if(CurrentBetSize == 0 || CurrentAmountOfMoney < CurrentBetSize || !GameManager.isAbleToBet){return;}
             SoundManager.PokerChipSound();
             Player_Info.GetComponent<Player_Information>().AmountOfMoney -= CurrentBetSize;
             Player_Info.GetComponent<Player_Information>().TotalBetAmount += CurrentBetSize;
