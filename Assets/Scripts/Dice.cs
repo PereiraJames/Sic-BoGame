@@ -12,18 +12,20 @@ public class Dice : MonoBehaviour
     public Sprite Side6;
 
     private int RolledValue = 0;
-    public GameObject Player_Info;
+    public GameManager GameManager;
 
     void Start()
     {
-        Debug.Log(gameObject);
         gameObject.GetComponent<Image>().sprite = Side6;
-        Player_Info = GameObject.Find("Player_Info");
-        RollDie();
+        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public void RollDie()
     {
+        // GameManager.dieRolls.Add(5);
+        // GameManager.dieRolls.Add(1);
+        // GameManager.dieRolls.Add(2);
+
         StartCoroutine(DieRolling());
     }
 
@@ -36,8 +38,8 @@ public class Dice : MonoBehaviour
             DisplayDice(RolledValue);
             yield return new WaitForSeconds(0.05f);
         }
-        Player_Info.GetComponent<Player_Information>().DiceTotal += RolledValue;
-        Debug.Log(Player_Info.GetComponent<Player_Information>().DiceTotal); 
+        GameManager.DiceTotal += RolledValue;
+        GameManager.dieRolls.Add(RolledValue);
     }
 
     private void DisplayDice(int RolledValue)
