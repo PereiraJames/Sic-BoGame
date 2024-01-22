@@ -2,6 +2,8 @@
 Personal Project Game
 
 ## Introduction:
+Impress your Chinese relatives this Chinese New Year by praticing a common gambling game - SicBo!
+
 Created using Unity and Built as WebGL.
 
 Gambling game typicall known as Sic-Bo.
